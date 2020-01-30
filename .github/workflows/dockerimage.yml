@@ -15,7 +15,7 @@ jobs:
     - name: Build the Docker image
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: docker.pkg.github.com/adamsong/cursedbot/CursedBot
-        username: ${{ secrets.DOCKER_USERNAME }}
+        name: docker.pkg.github.com/adamsong/cursedbot/cursedbot
+        username: ${{ github.actor }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         registry: docker.pkg.github.com
