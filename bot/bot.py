@@ -92,7 +92,7 @@ async def on_roll(message):
 		attacker_user = message.guild.get_member(attacker)
 		log_channel = message.guild.get_channel(668362659611148299)
 		effect_str = table.get_table(roll_result)
-		await log_channel.send(attacker_user.nick + " rolled effect " + str(roll_result) + ": " + effect_str)
+		await log_channel.send(attacker_user.display_name + " rolled effect " + str(roll_result) + ": " + effect_str)
 		dice = re.findall("\\d*d\\d+\\+?\\d*", effect_str)
 		for die in dice:
 			await log_channel.send("!" + die)
