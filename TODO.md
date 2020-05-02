@@ -1,7 +1,6 @@
 Features to add:
- - Change emoji for available and unavailable
+ - Change to raw emoji event
  - Automated testing
- - General code cleanup
  - Better weapon management
  - Better help
  - Handle command errors

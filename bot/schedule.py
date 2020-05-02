@@ -23,8 +23,10 @@ class Schedule(Cog):
         if reaction.message.content == "" and len(reaction.message.embeds) == 1:
             embed = reaction.message.embeds[0]
             if embed.title == "DND Schedule Poll":
+                emoji = reaction.emoji if type(reaction.emoji) is str \
+                    else f"<:{reaction.emoji.name}:{reaction.emoji.id}>"
                 for i in range(0, len(embed.fields)):
-                    if embed.fields[i].name.startswith(reaction.emoji):
+                    if embed.fields[i].name.startswith(emoji):
                         field = embed.fields[i]
                         embed.set_field_at(i, name=field.name, value=f"{reaction.count - 1} Responses",
                                            inline=field.inline)
@@ -36,15 +38,15 @@ class Schedule(Cog):
         if len(times) == 1:
             mention = "@everyone" if not testing else "@all"
             embed = discord.Embed(title="DND Schedule Poll",
-                                  description=f"Hello {mention}, \nThe tentative time for the next meeting is on " +
-                                              f"{times[0]}. Please react to this message with the emoji signifying your " +
-                                              f"attendance to this session.",
+                                  description=f"Hello {mention}, \nThe tentative time for the next meeting is on"
+                                              f" {times[0]}. Please react to this message with the emoji signifying \
+                                              your attendance to this session.",
                                   color=0xff0000)
-            embed.add_field(name="✅ - Available", value="0 Responses", inline=False)
-            embed.add_field(name="❌ - Unavailable", value="0 Responses", inline=False)
+            embed.add_field(name="<:AAA:699603393605271562> - Available", value="0 Responses", inline=False)
+            embed.add_field(name="<:MMM:699603435879923782> - Unavailable", value="0 Responses", inline=False)
             message = await ctx.send(embed=embed)
-            await message.add_reaction("✅")
-            await message.add_reaction("❌")
+            await message.add_reaction("<:AAA:699603393605271562>")
+            await message.add_reaction("<:MMM:699603435879923782>")
 
 
 def setup(bot):
