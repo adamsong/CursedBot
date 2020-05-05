@@ -37,6 +37,7 @@ config.read('config/config.ini')
 
 bot = commands.Bot(command_prefix="&")
 bot.owner_id = int(config['bot-data']['owner'])
+bot.remove_command("help")
 
 extensions = [
     "bot.weapons",
@@ -44,7 +45,8 @@ extensions = [
     "bot.attack",
     "bot.effect",
     "bot.message_handler",
-    "bot.persistence"
+    "bot.persistence",
+    "bot.help"
 ]
 
 
