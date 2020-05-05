@@ -12,8 +12,6 @@ rolls_per_effect = 3
 
 # END CONFIG #
 
-testing = True
-
 logging.basicConfig(level=logging.INFO)
 
 if not os.path.isfile("bot/config-default.ini") and not os.path.isfile("config/config.ini"):
@@ -38,6 +36,7 @@ config.read('config/config.ini')
 bot = commands.Bot(command_prefix="&")
 bot.owner_id = int(config['bot-data']['owner'])
 bot.remove_command("help")
+testing = config['bot']['testing']
 
 extensions = [
     "bot.weapons",
