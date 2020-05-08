@@ -36,7 +36,7 @@ config.read('config/config.ini')
 bot = commands.Bot(command_prefix="&")
 bot.owner_id = int(config['bot-data']['owner'])
 bot.remove_command("help")
-testing = config['bot']['testing']
+testing = bool(config['bot']['testing'])
 
 extensions = [
     "bot.weapons",

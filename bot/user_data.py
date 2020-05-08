@@ -66,12 +66,14 @@ class Weapon:
         }
 
     def deserialize(self, loaded_data: Dict[Any, Any]) -> 'Weapon':
+        print(f"loading data from {loaded_data}")
         self.weapon_type = WeaponType(loaded_data["weapon-type"])
         self.uses = loaded_data["uses"]
         self.player_known = loaded_data["player_known"]
         self.current_effect = loaded_data["current_effect"]
-        self.to_hit = loaded_data["to_hit"]
-        self.damage = loaded_data["damage"]
+        if self.weapon_type == WeaponType.MUNDANE:
+            self.to_hit = loaded_data["to_hit"]
+            self.damage = loaded_data["damage"]
         return self
 
 
