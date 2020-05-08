@@ -66,7 +66,6 @@ class Weapon:
         }
 
     def deserialize(self, loaded_data: Dict[Any, Any]) -> 'Weapon':
-        print(f"loading data from {loaded_data}")
         self.weapon_type = WeaponType(loaded_data["weapon-type"])
         self.uses = loaded_data["uses"]
         self.player_known = loaded_data["player_known"]
