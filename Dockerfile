@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/adamsong/cursedbot/deps:v1.0.0
+FROM docker.pkg.github.com/adamsong/cursedbot/deps:v1.0.1
 COPY bot /bot
   
 ENTRYPOINT [ "/usr/local/bin/python", "-mbot.bot" ]
