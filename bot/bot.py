@@ -56,4 +56,5 @@ for extension in extensions:
         exc = f"{type(e).__name__}: {e}"
         logging.error(f"Failed to load extension {extension}\n{exc}")
 
+logging.info("Running bot")
 bot.run(config['bot-data']['api_key'])

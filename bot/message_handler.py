@@ -143,7 +143,7 @@ async def mundane_button_prompt(message, current_attack: CurrentAttack, user: Us
 
 async def mundane_button_response(message, current_attack: CurrentAttack, user: User) -> None:
     if message.content.lower() in ["yes", "no", "y", "n"]:
-        current_attack.button = (message.content.lower() == "yes" or message.content.lower == "y")
+        current_attack.button = (message.content.lower() in ["yes", "y"])
         current_attack.stage = EAttackStage.ROLL_TO_HIT
     else:
         await message.channel.send("Please respond with `yes` or `no`")
@@ -167,7 +167,7 @@ async def did_hit_prompt(message, current_attack: CurrentAttack, user: User) -> 
 
 async def did_hit_response(message, current_attack: CurrentAttack, user: User) -> None:
     if message.content.lower() in ["yes", "no", "y", "n"]:
-        current_attack.hit = (message.content.lower() == "yes" or message.content.lower == "y")
+        current_attack.hit = (message.content.lower() in ["yes", "y"])
         if current_attack.hit:
             current_attack.stage = EAttackStage.ROLL_DAMAGE
         else:

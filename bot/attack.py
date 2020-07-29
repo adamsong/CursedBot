@@ -19,7 +19,7 @@ class Attack(Cog):
             return
 
         if len(args) != 0:
-            if args[0] in user.get_weapons():
+            if args[0].lower() in user.get_weapons():
                 current_attack.attacker = ctx.author.id
                 current_attack.weapon = user.get_weapon(args[0])
                 current_attack.weapon_name = args[0]
