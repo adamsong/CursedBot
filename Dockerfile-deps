@@ -4,5 +4,3 @@ RUN apk --update add --virtual build-dependencies libffi-dev openssl-dev python-
   && pip install --upgrade pip \
   && pip install discord.py[voice] \
   && apk del build-dependencies
-  
-ENTRYPOINT [ "/usr/local/bin/python", "/bot/bot.py" ]
