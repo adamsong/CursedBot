@@ -10,28 +10,33 @@ class Schedule(Cog):
 
     # noinspection PyUnusedLocal
     @Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        await Schedule.on_reaction(reaction)
+    async def on_raw_reaction_add(self, payload):
+        await Schedule.on_reaction(payload, self.bot)
 
     # noinspection PyUnusedLocal
     @Cog.listener()
-    async def on_reaction_remove(self, reaction, user):
-        await Schedule.on_reaction(reaction)
+    async def on_raw_reaction_remove(self, payload):
+        await Schedule.on_reaction(payload, self.bot)
 
     @staticmethod
-    async def on_reaction(reaction):
-        if len(reaction.message.embeds) == 1:
-            embed = reaction.message.embeds[0]
+    async def on_reaction(payload, bot):
+        channel = bot.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        if len(message.embeds) == 1:
+            embed = message.embeds[0]
             if embed.title == "DND Schedule Poll":
-                emoji = reaction.emoji if type(reaction.emoji) is str \
-                    else f"<:{reaction.emoji.name}:{reaction.emoji.id}>"
+                emoji_str = str(payload.emoji)
+                reactions = message.reactions
+                count = 0
+                for i in range(0, len(reactions)):
+                    count = reactions[i].count if str(reactions[i].emoji) == emoji_str else count
                 for i in range(0, len(embed.fields)):
-                    if embed.fields[i].name.startswith(emoji):
+                    if embed.fields[i].name.startswith(emoji_str):
                         field = embed.fields[i]
-                        embed.set_field_at(i, name=field.name, value=f"{reaction.count - 1} Responses",
+                        embed.set_field_at(i, name=field.name, value=f"{count - 1} Responses",
                                            inline=field.inline)
 
-                await reaction.message.edit(embed=embed)
+                await message.edit(embed=embed)
 
     @commands.command()
     async def schedule(self, ctx, *times):
@@ -65,7 +70,6 @@ class Schedule(Cog):
                 for i in range(0, len(times)):
                     await message.add_reaction(schedule_emoji[i])
                 await message.add_reaction("❌")
-
 
 
 def setup(bot):
