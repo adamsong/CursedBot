@@ -11,7 +11,49 @@ class Schedule(Cog):
     # noinspection PyUnusedLocal
     @Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        await Schedule.on_reaction(payload, self.bot)
+
+        emoji = str(payload.emoji)
+        if emoji == "📡":
+            channel = self.bot.get_channel(payload.channel_id)
+            channel_message = await channel.fetch_message(payload.message_id)
+            if len(channel_message.embeds) == 1:
+                embed = channel_message.embeds[0]
+                if embed.title == "DND Schedule Poll":
+                    guild = channel.guild
+                    roles = guild.roles
+                    role = next(x for x in roles if x.name == "Generic role #3")
+                    players = role.members
+                    reacted_players = set()
+                    reactions = channel_message.reactions
+                    chosen_responses = []
+                    chosen_response_count = 0
+                    for reaction in reactions:
+                        if reaction.count > chosen_response_count:
+                            chosen_responses = [str(reaction.emoji)]
+                            chosen_response_count = reaction.count
+                        elif reaction.count == chosen_response_count:
+                            chosen_responses.append(str(reaction.emoji))
+                        async for user in reaction.users():
+                            reacted_players.add(user)
+                    non_responsive = [x for x in players if x not in reacted_players]
+                    if len(non_responsive) == 0:
+                        mention = "@everyone" if not testing else "@all"
+                        disclaimer = "However, there are 2 or more people who cannot make this session, so it will " \
+                                     "be a one shot or similar if the session is still held. " if len(players) - 1 > chosen_response_count else ""
+                        message = ""
+                        if len(chosen_responses) == 1:
+                            message = f"Hello, {mention}. The winning vote is {chosen_responses[0]}. "
+                        else:
+                            message = f"Hello, {mention}. The winning votes are { ', '.join(chosen_responses) }. "
+                        message += disclaimer
+                        await channel.send(message)
+                    else:
+                        message = "Please ensure that you have all responded to the scheduling poll. "
+                        message = f"There is no response from { ','.join([x.mention if not testing else x.display_name for x in non_responsive]) }"
+                        await channel.send(message)
+                    await channel_message.clear_reaction("📡")
+        else:
+            await Schedule.on_reaction(payload, self.bot)
 
     # noinspection PyUnusedLocal
     @Cog.listener()
